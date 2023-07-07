@@ -93,6 +93,87 @@ Map 'class' to 'shape aesthetic'
 ggplot(data = mpg)+
   geom_point(mapping = aes(x = displ, y = hwy, shape = class))
 ```
+Make all the points blue
+```{r}
+ggplot(data = mpg) +
+  geom_point(mapping = aes (x = displ, y = hwy), colour = "blue")
+```
+Mapping a continuous variable to colour
+```{r}
+ggplot(data = mpg)+
+  geom_point(mapping = aes(x = displ, y = hwy, colour = year))
+```
+Stroke aesthetic - fills the outside of shape
+```{r}
+ggplot(data = mtcars, aes(x = wt, y = mpg)) +
+  geom_point(shape = 21, colour = "black", fill = "white", size = 5, stroke = 5)
+```
+Making the aesthetic something other than a variable name
+```{r}
+ggplot(data = mpg)+
+  geom_point(mapping = aes(x = displ, y = hwy, colour = displ < 5))
+# sets colour based on the specified engine size, below and above 5.
+```
+Faceting - 1 variable
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~ class, nrow = 2)
+```
+Faceting - 2 variables
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_grid(drv ~ cyl) # use facet_grid() instead of facet_wrap()
+```
+Faceting - not by rows or columns
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_grid(. ~ cyl) # use the . ~ variable to not facet by either rows or columns
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ .)
+```
+Facet a continuous variable
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) + 
+  facet_wrap(~cty)
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
 
 ```{r}
 
@@ -130,5 +211,20 @@ ggplot(data = mpg)+
 
 ```
 
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
 
 
