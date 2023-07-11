@@ -142,17 +142,23 @@ ggplot(data = mpg) +
   geom_point(mapping = aes(x = displ, y = hwy)) + 
   facet_wrap(~cty)
 ```
-
+Geometric objects - geom_smooth()
 ```{r}
-
+ggplot(data = mpg) + 
+  geom_smooth(mapping = aes(x = displ, y = hwy))
 ```
-
+Instead of setting shape of an object, you can sent linetype
 ```{r}
-
+ggplot(data = mpg)+
+  geom_smooth(mapping = aes(x = displ, y = hwy, linetype = drv))
 ```
-
+Linetype can also be substituted with colour
 ```{r}
-
+ggplot(data = mpg) +
+  geom_smooth(
+    mapping = aes(x = displ, y = hwy, color = drv),
+    #show.legend = FALSE
+  )
 ```
 
 ```{r}
