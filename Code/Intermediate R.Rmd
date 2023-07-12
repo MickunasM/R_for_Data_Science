@@ -1,0 +1,712 @@
+---
+title: "Intermediate R"
+output: pdf_document
+date: "2023-03-15"
+---
+                                    Conditionals and Control Flow
+
+== is the equality operator
+!= is the inequality operator
+< and > less than or greater another R object
+<= and >= less than or equal to or greater than or equal to another R object
+```{r}
+# Comparison of logicals
+TRUE == FALSE
+
+# Comparison of numerics
+-6*14 != 17-101
+
+# Comparison of character strings
+"useR" == "user"
+
+# Compare a logical with a numeric
+TRUE == 1
+```
+For string comparison, R determines the greater than relationship based on 
+alphabetical order. Also, keep in mind that TRUE is treated as 1 for arithmetic,
+and FALSE is treated as 0. Therefore, FALSE < TRUE is TRUE.
+```{r}
+# Comparison of numerics
+-6 * 5 + 2 >= -10 + 1
+
+# Comparison of character strings
+"raining" <= "raining dogs"
+
+# Comparison of logicals
+TRUE > FALSE
+```
+Using relational operators, find a logical answer, i.e. TRUE or FALSE, 
+for the following questions:
+```{r}
+# The linkedin and facebook vectors have already been created for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+
+# Popular days
+linkedin > 15
+
+# Quiet days
+linkedin <= 5
+
+# LinkedIn more popular than Facebook
+linkedin > facebook
+```
+Using the relational operators you've learned so far, try to discover the 
+following:
+```{r}
+# The social data has been created for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+views <- matrix(c(linkedin, facebook), nrow = 2, byrow = TRUE)
+
+# When does views equal 13?
+views == 13
+
+# When is views less than or equal to 14?
+views <= 14
+```
+AND (&) operator - takes 2 logical values and returns a TRUE or FALSE
+OR (|) operator - will return a TRUE or FALSE, if one comparison is correct
+it will return TRUE
+NOT (!) operator - negates the logical value it is used on
+Double && only examines the first element of each vector - same with ||
+
+Write R expressions to solve the following questions concerning the variable 
+last:
+```{r}
+# The linkedin and last variable are already defined for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+last <- tail(linkedin, 1)
+last
+
+# Is last under 5 or above 10?
+last < 5 | last > 10 
+
+# Is last between 15 (exclusive) and 20 (inclusive)?
+last > 16 & last < 20
+```
+Write R expressions to solve the following questions:
+```{r}
+# The social data (linkedin, facebook, views) has been created for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+views <- matrix(c(linkedin, facebook), nrow = 2, byrow = TRUE)
+
+# linkedin exceeds 10 but facebook below 10
+linkedin > 10 & facebook < 10
+
+# When were one or both visited at least 12 times?
+linkedin >= 12 | facebook >= 12
+
+# When is views between 11 (exclusive) and 14 (inclusive)?
+views > 11 & views <= 14
+```
+Conditional statements
+
+if statement
+if(condition) {expression}
+thre will be no print out if the expression is FALSE
+```{r}
+x <- -3
+
+if(x < 0) {print("x is a negative number")}
+
+
+```
+else statement - has to be used together with if statement.
+
+else will return a printout if the if codition is FALSE
+```{r}
+y <- 5
+
+if(y < 0) {print("y is a negative number")
+  } else {print("y is either a positive number or zero")}
+  
+
+```
+else if statement - will skip if statement if it is FALSE, will return output 
+if else if is TRUE, will skip else if when its FALSE
+```{r}
+m <- 0
+
+if(m < 0) {print("y is a negative number")
+  } else if(m == 0){print("m is zero")
+  } else {print("y is either a positive number or zero")}
+  
+```
+
+```{r}
+# Variables related to your last day of recordings
+medium <- "LinkedIn"
+num_views <- 14
+
+# Examine the if statement for medium
+if (medium == "LinkedIn") {
+  print("Showing LinkedIn information")
+}
+
+# Write the if statement for num_views
+if (num_views > 15) {
+  print("You are popular!")
+}
+```
+Add an else
+
+You can only use an else statement in combination with an if statement. 
+The else statement does not require a condition; its corresponding code is 
+simply run if all of the preceding conditions in the control structure are FALSE
+```{r}
+# Control structure for medium
+if (medium == "LinkedIn") {
+  print("Showing LinkedIn information")
+} else {print("Unknown medium")}
+
+# Control structure for num_views
+if (num_views > 15) {
+  print("You're popular!")
+} else {print("Try to be more visible!")}
+```
+Customize further: else if
+
+The else if statement allows you to further customize your control structure. 
+You can add as many else if statements as you like. Keep in mind that R ignores 
+the remainder of the control structure once a condition has been found that is 
+TRUE and the corresponding expressions have been executed.
+```{r}
+# Variables related to your last day of recordings
+medium <- "LinkedIn"
+num_views <- 14
+
+# Control structure for medium
+if (medium == "LinkedIn") {
+  print("Showing LinkedIn information")
+} else if (medium == "Facebook") {print("Showing Facebook information")
+  # Add code to print correct string when condition is TRUE
+} else {
+  print("Unknown medium")
+}
+
+# Control structure for num_views
+if (num_views > 15) {
+  print("You're popular!")
+} else if (num_views <= 15 & num_views > 10) 
+  {print("Your number of views is average")
+  # Add code to print correct string when condition is TRUE
+} else {
+  print("Try to be more visible!")
+}
+```
+
+```{r}
+number <- 4
+if (number < 10) {
+  if (number < 5) {
+    result <- "extra small"
+  } else {
+    result <- "small"
+  }
+} else if (number < 100) {
+  result <- "medium"
+} else {
+  result <- "large"
+}
+print(result)
+```
+Go through the instructions to create R code that generates a 
+'social media score', sms, based on the values of li and fb.
+```{r}
+# Variables related to your last day of recordings
+li <- 15
+fb <- 9
+
+# If both li and fb are 15 or higher, set sms equal to double the sum 
+# of li and fb.
+# If both li and fb are strictly below 10, set sms equal to half the sum 
+# of li and fb.
+# In all other cases, set sms equal to li + fb.
+# Finally, print the resulting sms variable.
+
+# Code the control-flow construct
+if (li >= 15 & fb >= 15) {
+  sms <- 2 * (li + fb)
+} else if (li >= 10 & fb >= 10) {
+  sms <- 0.5 * (li + fb)
+} else {
+  sms <- li + fb
+}
+
+# Print the resulting sms to the console
+sms
+
+```
+While loop, executes the code as long as the condition is TRUE
+
+Code a while loop with the following characteristics:
+The condition of the while loop should check if speed is higher than 30.
+Inside the body of the while loop, print out "Slow down!".
+Inside the body of the while loop, decrease the speed by 7 units and assign 
+this new value to speed again. This step is crucial; otherwise your while loop 
+will never stop and your session will expire.
+```{r}
+# Initialize the speed variable
+speed <- 64
+
+# Code the while loop
+while (speed > 30) {
+  print(paste("Slow down!"))
+  speed <- speed - 7
+}
+
+# Print out the speed variable
+speed
+```
+If the speed is greater than 48, have R print out "Slow down big time!", 
+and decrease the speed by 11.
+Otherwise, have R simply print out "Slow down!", and decrease the speed by 6.
+```{r}
+# Initialize the speed variable
+speed <- 64
+
+# Extend/adapt the while loop
+while (speed > 30) {
+  print(paste("Your speed is",speed))
+  if ( speed > 48) {
+    print(paste("Slow down big time!"))
+    speed <- speed - 11
+  } else {
+    print(paste("Slow down!"))
+    speed <- speed - 6
+  }
+}
+```
+Adapt the while loop such that it is abandoned when the speed of the 
+vehicle is greater than 80. This time, the speed variable has been initialized 
+to 88; keep it that way.
+```{r}
+# Initialize the speed variable
+speed <- 88
+
+while (speed > 30) {
+  print(paste("Your speed is", speed))
+  
+  # Break the while loop when speed exceeds 80
+  if (speed > 80) {
+    break
+  }
+  
+  if (speed > 48) {
+    print("Slow down big time!")
+    speed <- speed - 11
+  } else {
+    print("Slow down!")
+    speed <- speed - 6
+  }
+}
+```
+Finish the while loop so that it:
+
+prints out the triple of i, so 3 * i, at each run.
+is abandoned with a break if the triple of i is divisible by 8, 
+but still prints out this triple before breaking.
+```{r}
+# Initialize i as 1 
+i <- 1
+
+# Code the while loop
+while (i <= 10) {
+  print(3 * i)
+  if ( (3 * i) %% 8 == 0) {
+    break
+  }
+  i <- i + 1
+}
+```
+Loop over a vector
+
+In the previous video, Filip told you about two different strategies for 
+using the for loop. To refresh your memory, consider the following loops that 
+are equivalent in R:
+```{r}
+primes <- c(2, 3, 5, 7, 11, 13)
+
+# loop version 1
+for (p in primes) {
+  print(p)
+}
+
+# loop version 2
+for (i in 1:length(primes)) {
+  print(primes[i])
+}
+```
+Write a for loop that iterates over all the elements of linkedin and prints 
+out every element separately. Do this in two ways: using the loop version 1 and 
+the loop version 2 in the example code above.
+```{r}
+# The linkedin vector has already been defined for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+
+# Loop version 1
+for(v in linkedin) {
+    print(v)
+}
+
+# Loop version 2
+for (v in 1:length(linkedin)) {
+  print(linkedin[v])
+}
+```
+Loop over a list
+
+Looping over a list is just as easy and convenient as looping over a vector. 
+There are again two different approaches here:
+```{r}
+primes_list <- list(2, 3, 5, 7, 11, 13)
+
+# loop version 1
+for (p in primes_list) {
+  print(p)
+}
+
+# loop version 2
+for (i in 1:length(primes_list)) {
+  print(primes_list[[i]])
+}
+```
+Loop directly over the nyc list (loop version 1).
+Define a looping index and do subsetting using double brackets (loop version 2).
+```{r}
+# The nyc list is already specified
+nyc <- list(pop = 8405837, 
+            boroughs = c("Manhattan", "Bronx", "Brooklyn", 
+                         "Queens", "Staten Island"), 
+            capital = FALSE)
+
+# Loop version 1
+for (p in nyc) {
+  print(p)
+}
+
+# Loop version 2
+for (p in 1:length(nyc)) {
+  print(nyc[[p]])
+}
+```
+Add code to the for loop that loops over the elements of the linkedin vector:
+
+If the vector element's value exceeds 10, print out "You're popular!".
+If the vector element's value does not exceed 10, print out "Be more visible!"
+```{r}
+# The linkedin vector has already been defined for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+
+# Code the for loop with conditionals
+for (li in linkedin) {
+  if (li > 10) {
+    print("You're popular!")
+  } else {
+    print("Be more visible!")
+  }
+  print(li)
+}
+```
+Extend the for loop with two new, separate if tests as follows:
+
+If the vector element's value exceeds 16, print out "This is ridiculous, 
+I'm outta here!" and have R abandon the for loop (break).
+If the value is lower than 5, print out "This is too embarrassing!" 
+and fast-forward to the next iteration (next).
+```{r}
+# The linkedin vector has already been defined for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+
+# Adapt/extend the for loop
+for (li in linkedin) {
+  if (li > 10) {
+    print("You're popular!")
+  } else {
+    print("Be more visible!")
+  }
+  
+  # Add if statement with break
+  if (li > 16) {
+    print("This is ridiculous, I'm outta here!")
+      break
+  }
+  
+  # Add if statement with next
+  if (li < 5) {
+    print("This is too embarrassing!") 
+      next
+  }
+  
+  print(li)
+}
+```
+Build a for loop from scratch
+
+This exercise will not introduce any new concepts on for loops.
+
+We already went ahead and defined a variable rquote. 
+This variable has been split up into a vector that contains separate letters 
+and has been stored in a vector chars with the strsplit() function.
+
+Can you write code that counts the number of r's that come before 
+the first u in rquote?
+```{r}
+# Pre-defined variables
+rquote <- "r's internals are irrefutably intriguing"
+chars <- strsplit(rquote, split = "")[[1]]
+
+# Initialize rcount
+rcount <- 0
+
+# Finish the for loop
+for (char in chars) {
+    if (char == "r")
+    rcount <- rcount + 1
+    if (char == "u")
+    break
+  
+  
+}
+
+# Print out rcount
+rcount
+```
+                                    FUNCTIONS
+Look up the documentation for an r function either using help() or ?
+e.g. help(sd) or ?sd
+
+can also use args() to learn about the arguments of a function instead of 
+reading the documentation
+
+```{r}
+help(sd)
+?sd
+args(sd)
+```
+In the next exercises, you'll be learning how to use the mean() function with 
+increasing complexity. The first thing you'll have to do is get acquainted with
+the mean() function.
+```{r}
+# Consult the documentation on the mean() function
+?mean
+
+# Inspect the arguments of the mean() function
+args(mean)
+```
+Once more, you'll be working with the view counts of your social network 
+profiles for the past 7 days. These are stored in the linkedin and facebook 
+vectors and have already been created for you.
+```{r}
+# The linkedin and facebook vectors have already been created for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+
+# Calculate average number of views
+avg_li <- mean(linkedin)
+avg_fb <- mean(facebook)
+
+
+# Inspect avg_li and avg_fb
+avg_li
+avg_fb
+```
+
+```{r}
+# The linkedin and facebook vectors have already been created for you
+linkedin <- c(16, 9, 13, 5, 2, 17, 14)
+facebook <- c(17, 7, 5, 16, 8, 13, 14)
+
+# Calculate the mean of the sum
+avg_sum <- mean(linkedin + facebook)
+
+# Calculate the trimmed mean of the sum
+avg_sum_trimmed <- mean(linkedin + facebook, trim = 0.2)
+
+# Inspect both new variables
+avg_sum
+avg_sum_trimmed
+
+# When the trim argument is not zero, it chops off a fraction (equal to trim) 
+# of the vector you pass as argument x.
+```
+```{r}
+# The linkedin and facebook vectors have already been created for you
+linkedin <- c(16, 9, 13, 5, NA, 17, 14)
+facebook <- c(17, NA, 5, 16, 8, 13, 14)
+
+# Basic average of linkedin
+mean(linkedin)
+
+# Advanced average of linkedin
+mean(linkedin, na.rm = TRUE)
+```
+Use abs() on linkedin - facebook to get the absolute differences between 
+the daily LinkedIn and Facebook profile views. Place the call to abs() inside 
+mean() to calculate the Mean Absolute Deviation. In the mean() call, 
+make sure to specify na.rm to treat missing values correctly!
+```{r}
+# The linkedin and facebook vectors have already been created for you
+linkedin <- c(16, 9, 13, 5, NA, 17, 14)
+facebook <- c(17, NA, 5, 16, 8, 13, 14)
+
+# Calculate the mean absolute deviation
+mean(abs(linkedin - facebook), na.rm = TRUE)
+```
+                                  Write your own function
+```{r}
+# Create a function pow_two()
+pow_two <- function(x) {
+    x ** 2
+}
+
+# Use the function
+pow_two(12)
+
+# Create a function sum_abs()
+sum_abs <- function(x,y) {
+    abs(x) + abs(y)
+}
+
+# Use the function
+sum_abs(-2, 3)
+```
+Let's say you want to write a function that gives us the random outcome of 
+throwing a fair die:
+```{r}
+throw_die <- function() {
+  number <- sample(1:6, size = 1)
+  number
+}
+
+throw_die()
+```
+Define a function, hello(). It prints out "Hi there!" and returns TRUE. 
+It has no arguments.
+Call the function hello(), without specifying arguments of course.
+```{r}
+# Define the function hello()
+hello <- function() {
+    print("Hi there!")
+    TRUE
+}
+
+# Call the function hello()
+hello()
+```
+Add an optional argument, named print_info, that is TRUE by default.
+Wrap an if construct around the print() function: 
+this function should only be executed if print_info is TRUE.
+Feel free to experiment with the pow_two() function you've just coded.
+```{r}
+pow_two <- function(x, print_info = TRUE) {
+  y <- x ^ 2
+  if (print_info == TRUE)
+  print(paste(x, "to the power two equals", y))
+  return(y)
+}
+
+pow_two(5)
+```
+Finish the function definition for interpret(), that interprets the number of 
+profile views on a single day:
+  The function takes one argument, num_views.
+  If num_views is greater than 15, the function prints out "You're popular!" 
+  to the console and returns num_views.
+  Else, the function prints out "Try to be more visible!" and returns 0.
+  Finally, call the interpret() function twice: on the first value of the 
+  linkedin vector and on the second element of the facebook vector.
+```{r}
+# Define the interpret function
+interpret <- function(num_views) {
+  if (num_views > 15) {
+    print("You're popular!")
+    return(num_views)
+  } else {
+    print("Try to be more visible!")
+    return(0)
+  }
+}
+
+# Call the interpret function
+interpret(linkedin[1])
+```
+Finish the template for the interpret_all() function:
+
+  Make return_sum an optional argument, that is TRUE by default.
+  Inside the for loop, iterate over all views: on every iteration,
+  add the result of interpret(v) to count. Remember that interpret(v) returns v 
+  for popular days, and 0 otherwise. At the same time, interpret(v) will also do 
+  some printouts.
+Finish the if construct:
+  If return_sum is TRUE, return count.
+  Else, return NULL.
+Call this newly defined function on both linkedin and facebook.
+```{r}
+# The interpret() can be used inside interpret_all()
+interpret <- function(num_views) {
+  if (num_views > 15) {
+    print("You're popular!")
+    return(num_views)
+  } else {
+    print("Try to be more visible!")
+    return(0)
+  }
+}
+
+# Define the interpret_all() function
+# views: vector with data to interpret
+# return_sum: return total number of views on popular days?
+interpret_all <- function(views, return_sum = TRUE) {
+  count <- 0
+
+  for (v in views) {
+    count <- interpret(v) + count
+  }
+  if (return_sum) {
+    TRUE
+    return(count)
+  } else {
+    return(NULL)
+  }
+}
+
+# Call the interpret_all() function 
+interpret_all(linkedin)
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+
