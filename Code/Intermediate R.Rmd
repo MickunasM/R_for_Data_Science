@@ -676,37 +676,406 @@ interpret_all <- function(views, return_sum = TRUE) {
 # Call the interpret_all() function 
 interpret_all(linkedin)
 ```
-
+                                  The Apply Family
+Usually follows this expression - lapply(X, FUN, ...)
+lapplu is used to apply a function over each element of a list or vector
 ```{r}
+pioneers <- c("GAUSS:1777", "BAYES:1702", "PASCAL:1623", "PEARSON:1857")
 
+# Split names from birth year
+split_math <- strsplit(pioneers, split = ":")
+
+# Convert to lowercase strings: split_low
+split_low <- lapply(split_math, tolower)
+
+# Take a look at the structure of split_low
+str(split_low)
+```
+Apply select_first() over the elements of split_low with lapply() and assign 
+the result to a new variable names.
+Next, write a function select_second() that does the exact same thing for 
+the second element of an inputted vector.
+Finally, apply the select_second() function over split_low and assign the 
+output to the variable years.
+```{r}
+pioneers <- c("GAUSS:1777", "BAYES:1702", "PASCAL:1623", "PEARSON:1857")
+split <- strsplit(pioneers, split = ":")
+split_low <- lapply(split, tolower)
+
+# Write function select_first()
+select_first <- function(x) {
+  x[1]
+}
+
+# Apply select_first() over split_low: names
+names <- lapply(split_low, select_first)
+
+# Write function select_second()
+select_second <- function(x) {
+  x[2]
+}
+
+# Apply select_second() over split_low: years
+years <- lapply(split_low, select_second)
+```
+Anonymous functions
+```{r}
+# Transform: use anonymous function inside lapply
+names <- lapply(split_low, function(x) {x[1]})
+
+# Transform: use anonymous function inside lapply
+years <- lapply(split_low, function(x) {x[2]})
+```
+Use lapply() twice to call select_el() over all elements in split_low: 
+once with the index equal to 1 and a second time with the index equal to 2. 
+Assign the result to names and years, respectively.
+```{r}
+# Generic select function
+select_el <- function(x, index) {
+  x[index]
+}
+
+# Use lapply() twice on split_low: names and years
+names <- lapply(split_low, select_el, index = 1)
+years <- lapply(split_low, select_el, index = 2)
+```
+sapply():
+Short-hand for simplify apply
+Follows the same structure - sapply(X, FUN, ...)
+```{r}
+temp <- list(c(3, 7, 9, 6, -1), c(6, 9, 12, 13, 5), c(4, 8, 3, -1, -3
+), c(1, 4, 7, 2, -2), c(5, 7, 9, 4, 2), c(-3, 5, 8, 9, 4), c(3, 
+6, 9, 4, 1))
+
+# Use lapply() to find each day's minimum temperature
+lapply(temp, min)
+
+# Use sapply() to find each day's minimum temperature
+sapply(temp, min)
+
+# Use lapply() to find each day's maximum temperature
+lapply(temp, max)
+
+# Use sapply() to find each day's maximum temperature
+sapply(temp, max)
 ```
 
 ```{r}
+# Function calculates the average of the min and max temperatures of temp
+extremes_avg <- function(x) {
+  (min(x) + max(x)) / 2
+}
 
+# Apply extremes_avg() over temp using sapply()
+sapply(temp, extremes_avg)
+
+# Apply extremes_avg() over temp using lapply()
+lapply(temp, extremes_avg)
 ```
 
 ```{r}
+# A function that returns min and max of a vector: extremes
+extremes <- function(x) {
+  c(min = min(x), max = max(x))
+}
 
+# Apply extremes() over temp with sapply()
+sapply(temp, extremes)
+
+# Apply extremes() over temp with lapply()
+lapply(temp, extremes)
 ```
+vapply():
+Syntax -> vapply(X, FUN, FUN.VALUE, ..., USE.NAMES = TRUE)
+
+vapply() can be considered a more robust version of sapply(), because you 
+explicitly restrict the output of the function you want to apply. Converting 
+your sapply() expressions in your own R scripts to vapply() expressions is 
+therefore a good practice.
+```{r}
+# Definition of basics()
+basics <- function(x) {
+  c(min = min(x), mean = mean(x), max = max(x))
+}
+
+# Apply basics() over temp using vapply()
+vapply(temp, basics, numeric(3)) # there are 3 vectors in the function
+```
+Increase the vector length to 4 by adjusting the function
+```{r}
+# Definition of the basics() function
+basics <- function(x) {
+  c(min = min(x), mean = mean(x), median = median(x), max = max(x))
+}
+# Apply basics() over temp using vapply()
+vapply(temp, basics, numeric(4))
+```
+                                  Utilities
+Useful functions
+abs(): Calculate the absolute value.
+sum(): Calculate the sum of all the values in a data structure.
+mean(): Calculate the arithmetic mean.
+round(): Round the values to 0 decimal places by default.
+```{r}
+# The errors vector has already been defined for you
+errors <- c(1.9, -2.6, 4.0, -9.5, -3.4, 7.3)
+
+# Sum of absolute rounded values of errors
+sum(round(abs(errors)))
+```
+Using mean()
+```{r}
+# New vectors
+vec1 <- c(1.5, 2.5, 8.4, 3.7, 6.3)
+vec2 <- rev(vec1)
+
+# Find the mean of vec1 and vec2
+mean(c(abs(vec1), abs(vec2)))
+```                          
+R features a bunch of functions to juggle around with data structures:
+seq(): Generate sequences, by specifying the from, to, and by arguments.
+rep(): Replicate elements of vectors and lists.
+sort(): Sort a vector in ascending order. Works on numerics, but also on 
+character strings and logicals.
+rev(): Reverse the elements in a data structures for which reversal is defined.
+str(): Display the structure of any R object.
+append(): Merge vectors or lists.
+is.*(): Check for the class of an R object.
+as.*(): Convert an R object from one class to another.
+unlist(): Flatten (possibly embedded) lists to produce a vector.
+```{r}
+# The linkedin and facebook lists have already been created for you
+linkedin <- list(16, 9, 13, 5, 2, 17, 14)
+facebook <- list(17, 7, 5, 16, 8, 13, 14)
+
+# Convert linkedin and facebook to a vector: li_vec and fb_vec
+li_vec <- unlist(linkedin)
+fb_vec <- unlist(facebook)
+
+# Append fb_vec to li_vec: social_vec
+social_vec <- append(li_vec, fb_vec)
+
+# Sort social_vec
+sort(social_vec, decreasing = TRUE)
+```
+rep goes before seq
+```{r}
+rep(seq(1, 7, by = 2), times = 7)
+```
+Creating sequences using seq()
+```{r}
+# Create first sequence: seq1
+seq1 <- seq(1, 500, by = 3)
+
+# Create second sequence: seq2
+seq2 <- seq(1200, 900, by = -7)
+
+# Calculate total sum of the sequences
+sum(seq1) + sum(seq2)
+```
+Regular expressions an be used to see whether a pattern exists inside a 
+character string or a vector of character strings. For this purpose, 
+you can use:
+grepl(pattern = <regex>, x = <string>)
+grep(pattern = <regex>, x = <string>)
+
+With sub() and gsub() you can specify a replacement argument: 
+sub(pattern = <regex>, replacement = <str>, x = <str>)
+gsub(pattern = <regex>, replacement = <str>, x = <str>)
+```{r}
+# The emails vector
+emails <- c("john.doe@ivyleague.edu", "education@world.gov", "dalai.lama@peace.org",
+            "invalid.edu", "quant@bigdatacollege.edu", "cookie.monster@sesame.tv")
+
+# Use grepl() to match for "edu"
+grepl(pattern = "edu", x = emails)
+
+# Use grep() to match for "edu", save result to hits
+hits <- grep(pattern = "edu", x = emails)
+hits
+
+# Subset emails using hits
+emails[hits]
+```
+You can use the caret, ^, and the dollar sign, $ to match the content located in the start and end of a string, respectively. Other regular expressions:
+
+.*: A usual suspect! It can be read as "any character that is matched zero or 
+more times".
+
+\\s: Match a space. The "s" is normally a character, escaping it (\\) makes it 
+a metacharacter.
+
+[0-9]+: Match the numbers 0 to 9, at least once (+).
+
+([0-9]+): The parentheses are used to make parts of the matching string
+available to define the replacement. 
 
 ```{r}
+# Use grepl() to match for .edu addresses more robustly
+grepl(pattern = "@.*\\.edu$", x = emails)
 
+# Use grep() to match for .edu addresses more robustly, save result to hits
+hits <- grep(pattern = "@.*\\.edu$", x = emails)
+
+# Subset emails using hits
+emails[hits]
 ```
-
+With the advanced regular expression "@.*\\.edu$", use sub() to replace the 
+match with "@datacamp.edu". Since there will only be one match per character 
+string, gsub() is not necessary here. Inspect the resulting output.
 ```{r}
-
+# Use sub() to convert the email domains to datacamp.edu
+sub(pattern = "@.*\\.edu$", replacement = "@datacamp.edu", x = emails)
 ```
+Dates and Times:
+The character string has to obey a format that can be defined using a set of 
+symbols (the examples correspond to 13 January, 1982):
 
+%Y: 4-digit year (1982)
+%y: 2-digit year (82)
+%m: 2-digit month (01)
+%d: 2-digit day of the month (13)
+%A: weekday (Wednesday)
+%a: abbreviated weekday (Wed)
+%B: month (January)
+%b: abbreviated month (Jan)
 ```{r}
+# Get the current date: today
+today <- Sys.Date()
+today
 
+# See what today looks like under the hood
+unclass(today)
+
+# Get the current time: now
+now <- Sys.time()
+now
+
+# See what now looks like under the hood
+unclass(now)
 ```
-
+To create a Date object from a simple character string in R, you can use the 
+as.Date()
 ```{r}
+# Definition of character strings representing dates
+str1 <- "May 23, '96"
+str2 <- "2012-03-15"
+str3 <- "30/January/2006"
 
+# Convert the strings to dates: date1, date2, date3
+date1 <- as.Date(str1, format = "%b %d, '%y")
+date1
+
+date2 <- as.Date(str2)
+date2 
+
+date3 <- as.Date(str3, format = "%d/%B/%Y")
+date3 
+
+# Convert dates to formatted strings
+format(date1, "%A") # Select weekday
+format(date2, "%d") # Select day of the month
+format(date3, "%b %Y") # Select abbreviated month and 4-digit year
 ```
+Create and format times
+Similar to working with dates, you can use as.POSIXct() to convert from a 
+character string to a POSIXct object, and format() to convert from a POSIXct 
+object to a character string. Again, you have a wide variety of symbols:
 
+%H: hours as a decimal number (00-23)
+%I: hours as a decimal number (01-12)
+%M: minutes as a decimal number
+%S: seconds as a decimal number
+%T: shorthand notation for the typical format %H:%M:%S
+%p: AM/PM indicator
 ```{r}
+# Definition of character strings representing times
+str1 <- "May 23, '96 hours:23 minutes:01 seconds:45"
+str2 <- "2012-3-12 14:23:08"
 
+# Convert the strings to POSIXct objects: time1, time2
+time1 <- as.POSIXct(str1, format = "%B %d, '%y hours:%H minutes:%M seconds:%S")
+time1
+
+time2 <- as.POSIXct(str2)
+time2
+
+# Convert times to formatted strings
+format(time1, "%M") # Extract only minutes
+format(time2, "%I:%M %p") # Extract hours:minutes AM/PM
 ```
+Calculations with Dates:
+```{r}
+# Create some dates for when I ate pizza
+day1 <- structure(19532, class = "Date") # Equivalent as.Date("2023-06-24")
+day2 <- structure(19534, class = "Date")
+day3 <- structure(19539, class = "Date")
+day4 <- structure(19545, class = "Date")
+day5 <- structure(19550, class = "Date")
 
+pizza <- c(day1, day2, day3, day4, day5)
+
+# Difference between last and first pizza day
+day5 - day1
+
+# Create differences between consecutive pizza days: day_diff
+day_diff <- diff(pizza)
+day_diff
+
+# Average period between two consecutive pizza days
+mean(day_diff)
+```
+Calculations with Times:
+```{r}
+# Create a vector for the dates and times a user has logged in
+login <- structure(c(1687947484.74737, 1688375658.36921, 1688386911.68576, 
+1688387844.83761, 1688593075.89139), class = c("POSIXct", "POSIXt"
+))
+# Create a vector for the dates and times a user has logged out
+logout <- structure(c(1687947484.74737, 1688375658.36921, 1688386911.68576, 
+1688387844.83761, 1688593075.89139), class = c("POSIXct", "POSIXt"
+))
+
+# Calculate the difference between login and logout: time_online
+time_online <- logout - login
+
+# Inspect the variable time_online
+print(time_online)
+
+# Calculate the total time online
+sum(time_online)
+
+# Calculate the average time online
+mean(time_online)
+```
+Use as.Date() to convert the astro vector to a vector containing Date objects. 
+You will need the %d, %b and %Y symbols to specify the format. 
+Store the resulting vector as astro_dates.
+
+Use as.Date() to convert the meteo vector to a vector with Date objects. 
+This time, you will need the %B, %d and %y symbols for the format argument. 
+Store the resulting vector as meteo_dates.
+
+With a combination of max(), abs() and -, calculate the maximum absolute 
+difference between the astronomical and the meteorological beginnings of a 
+season, i.e. astro_dates and meteo_dates. Simply print this maximum difference 
+to the console output.
+```{r}
+astro <- c(spring = "20-Mar-2015", summer = "25-Jun-2015", fall = "23-Sep-2015", 
+winter = "22-Dec-2015")
+
+meteo <- c(spring = "March 1, 15", summer = "June 1, 15", fall = "September 1, 15", 
+winter = "December 1, 15")
+
+# Convert astro to vector of Date objects: astro_dates
+astro_dates <- as.Date(astro, format = "%d-%b-%Y")
+astro_dates
+
+# Convert meteo to vector of Date objects: meteo_dates
+meteo_dates <- as.Date(meteo, format = "%B %d, %y")
+meteo_dates
+
+# Calculate the maximum absolute difference between astro_dates and meteo_dates
+max(abs(astro_dates - meteo_dates))
+```
 
