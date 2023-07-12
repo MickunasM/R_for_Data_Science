@@ -6,8 +6,8 @@ In this repo I upload code that I believe is an essential part of a Data Scienti
 
 
 Contents of the "Code" folder
-| File Name     | Contents         
-| ------------- |:-------------:|
-| col 3 is      | right-aligned | 
-| col 2 is      | centered      |   
-| zebra stripes | are neat      |  
+| File Name      | Contents         
+| -------------  |:-------------:|
+| Intro to R     | Vectors, Matrices, Factors, Data Frames, Lists                         | 
+| Intermediate R | Conditionals & Control Flow, Loops, Functions, Apply Family, Utilities |   
+| Exploring Data | Exploring built-in datasets with ggplot2                               |  
